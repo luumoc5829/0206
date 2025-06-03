@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<link href="https://fonts.googleapis.com/css2?family=Comic+Neue&display=swap" rel="stylesheet">
     <title>Lovee</title>
     <style>
         body {
@@ -11,9 +13,9 @@
             overflow: hidden;
             background-color: #000;
             color: #fff;
-            font-family: 'Pacifico', cursive;
+            font-family: 'Dancing Script', cursive;
             touch-action: none;
-            height: 100vh;
+            height: 120vh;
             perspective: 1200px;
         }
         
@@ -38,25 +40,17 @@
             transform-origin: center center;
             opacity: 0;
             /* Thêm dòng sau để viền trắng rõ nét */
-            -webkit-text-stroke: 1px white;
             text-shadow: 
-                0 0 2px #fff,
-                0 0 5px #fff,
-                0 0 10px #fff;
-        }
-        
-        .heart {
-            color: #ff6b3d;
-            text-shadow: 
-                0 0 2px #ff6b3d,
-                0 0 4px rgba(255, 107, 61, 0.8),
-                0 0 6px rgba(255, 107, 61, 0.6);
-        }
+                0 0 10px #fff,            /* Lớp xanh nhạt */
+                0 0 20px #fff,            /* Lớp xanh ngọc */
+                0 0 30px #00ffff,            /* Lớp xanh đậm */
+                0 0 35px #0088ff;            /* Lớp xanh dương */
+                }
         
         @keyframes rain {
             0% { 
                 opacity: 0;
-                transform: translateY(-100px) translateZ(var(--z-pos));
+                transform: translateY(-140px) translateZ(var(--z-pos));
             }
             10% {
                 opacity: 0.9;
@@ -84,7 +78,8 @@
                 "02.06.2025",
                 "Yêu Anhhhhh ♡",
                 "Thành ♡",
-                "🧡"
+                "💙",
+                "Chúc anh sn vui nè",
             ];
             
             // Tạo 5 lớp với độ sâu khác nhau
@@ -105,11 +100,7 @@
                     textElement.className = 'text';
                     
                     const randomMsg = messages[Math.floor(Math.random() * messages.length)];
-                    if (randomMsg.includes('heart')) {
-                        textElement.innerHTML = randomMsg;
-                    } else {
-                        textElement.textContent = randomMsg;
-                    }
+                    textElement.textContent = randomMsg;
                     
                     const leftPos = -50 + Math.random() * 170; // Từ -10% đến 110%
                     const fontSize = 1 + Math.random() * (2 - depth * 0.2); // Lớp càng xa chữ càng nhỏ
@@ -133,7 +124,7 @@
                 }
                 
                 // Tạo chữ với mật độ khác nhau cho từng lớp
-                const density = [500, 700, 900, 900, 700]; // Lớp càng xa mật độ càng dày
+                const density = [500, 900, 900, 900, 700]; // Lớp càng xa mật độ càng dày
                 setInterval(createRain, density[depth]);
             }
             
