@@ -1,47 +1,194 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-  <meta charset="UTF-8">
-  <title>Hiệu ứng chữ rơi</title>
-  <style>
-    body {
-      margin: 0;
-      overflow: hidden;
-      background: #000;
-      font-family: sans-serif;
-    }
-    .falling-text {
-      position: absolute;
-      font-size: 24px;
-      color: #fff;
-      text-shadow: 0 0 8px #00f, 0 0 16px #00f;
-      animation: fall linear infinite;
-    }
-    @keyframes fall {
-      0% {
-        top: -50px;
-        opacity: 1;
-      }
-      100% {
-        top: 100vh;
-        opacity: 0;
-      }
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>Chúc Mừng Sinh Nhật!</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            background-color: #000;
+            color: #fff;
+            font-family: 'Pacifico', cursive;
+            touch-action: none;
+            height: 100vh;
+            perspective: 1200px;
+        }
+        
+        #scene {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+        
+        .text-layer {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+        }
+        
+        .text {
+            position: absolute;
+            font-weight: 300;
+            text-shadow: 
+                0 0 5px #fff,
+    0 0 20px #fff,
+    0 0 30px #fff,
+    0 0 40px #fff,
+    0 0 50px #fff;
+            white-space: nowrap;
+            transform-origin: center center;
+            opacity: 0;
+        }
+        
+        .heart {
+            color: #ff6b3d;
+            text-shadow: 
+                0 0 2px #ff6b3d,
+                0 0 4px rgba(255, 107, 61, 0.8),
+                0 0 6px rgba(255, 107, 61, 0.6);
+        }
+        
+        @keyframes rain {
+            0% { 
+                opacity: 0;
+                transform: translateY(-100px) translateZ(var(--z-pos));
+            }
+            10% {
+                opacity: 0.9;
+            }
+            90% {
+                opacity: 0.9;
+            }
+            100% { 
+                opacity: 0;
+                transform: translateY(100vh) translateZ(var(--z-pos));
+            }
+        }
+    </style>
 </head>
 <body>
-  <script>
-    const texts = ["我愛你", "Happy Birthday", "02.06.2025", "Been Together"];
-    function createText() {
-      const text = document.createElement("div");
-      text.className = "falling-text";
-      text.innerText = texts[Math.floor(Math.random() * texts.length)];
-      text.style.left = Math.random() * window.innerWidth + "px";
-      text.style.animationDuration = 3 + Math.random() * 3 + "s";
-      document.body.appendChild(text);
-      setTimeout(() => document.body.removeChild(text), 6000);
-    }
-    setInterval(createText, 300);
-  </script>
+    <div id="scene">
+        <!-- Các lớp chữ sẽ được thêm bằng JS -->
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const scene = document.getElementById('scene');
+            const messages = [
+                "Happy Birthday",
+                "02.06.2025",
+                "Yêu Anhhhhh ♡",
+                "Thành ♡",
+                "🧡"
+            ];
+            
+            // Tạo 5 lớp với độ sâu khác nhau
+            for (let layer = 0; layer < 5; layer++) {
+                const layerElement = document.createElement('div');
+                layerElement.className = 'text-layer';
+                layerElement.style.transform = `translateZ(${-layer * 200}px)`;
+                scene.appendChild(layerElement);
+                
+                // Tạo chữ cho mỗi lớp
+                createLayerRain(layerElement, layer);
+            }
+            
+            function createLayerRain(layerElement, depth) {
+                // Tạo mưa chữ cho từng lớp
+                function createRain() {
+                    const textElement = document.createElement('div');
+                    textElement.className = 'text';
+                    
+                    const randomMsg = messages[Math.floor(Math.random() * messages.length)];
+                    if (randomMsg.includes('heart')) {
+                        textElement.innerHTML = randomMsg;
+                    } else {
+                        textElement.textContent = randomMsg;
+                    }
+                    
+                    const leftPos = Math.random() * 100;
+                    const fontSize = 1 + Math.random() * (2 - depth * 0.2); // Lớp càng xa chữ càng nhỏ
+                    const duration = 3 + Math.random() * 2 + depth * 0.5; // Lớp xa rơi chậm hơn
+                    const delay = Math.random() * 0.5;
+                    const zPos = -100 + Math.random() * 200;
+                    
+                    textElement.style.left = `${leftPos}%`;
+                    textElement.style.fontSize = `${fontSize}em`;
+                    textElement.style.setProperty('--z-pos', `${zPos}px`);
+                    textElement.style.animation = `rain ${duration}s linear ${delay}s forwards`;
+                    
+                    // Lớp càng xa thì mờ hơn
+                    textElement.style.opacity = `${0.9 - depth * 0.15}`;
+                    
+                    layerElement.appendChild(textElement);
+                    
+                    setTimeout(() => {
+                        textElement.remove();
+                    }, (duration + delay) * 1000);
+                }
+                
+                // Tạo chữ với mật độ khác nhau cho từng lớp
+                const density = [200, 300, 400, 300, 200]; // Lớp càng xa mật độ càng dày
+                setInterval(createRain, density[depth]);
+            }
+            
+            // Xử lý xoay 3D
+            let isDragging = false;
+            let previousMousePosition = { x: 0, y: 0 };
+            let rotation = { x: -10, y: 0 };
+            
+            function updateRotation() {
+                scene.style.transform = `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`;
+            }
+            updateRotation();
+            
+            // Desktop events
+            scene.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                previousMousePosition = { x: e.clientX, y: e.clientY };
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const deltaX = e.clientX - previousMousePosition.x;
+                const deltaY = e.clientY - previousMousePosition.y;
+                rotation.y += deltaX * 0.2;
+                rotation.x -= deltaY * 0.2;
+                updateRotation();
+                previousMousePosition = { x: e.clientX, y: e.clientY };
+            });
+            
+            document.addEventListener('mouseup', () => {
+                isDragging = false;
+            });
+            
+            // Mobile events
+            scene.addEventListener('touchstart', (e) => {
+                isDragging = true;
+                previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                e.preventDefault();
+            }, { passive: false });
+            
+            document.addEventListener('touchmove', (e) => {
+                if (!isDragging) return;
+                const deltaX = e.touches[0].clientX - previousMousePosition.x;
+                const deltaY = e.touches[0].clientY - previousMousePosition.y;
+                rotation.y += deltaX * 0.2;
+                rotation.x -= deltaY * 0.2;
+                updateRotation();
+                previousMousePosition = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                e.preventDefault();
+            }, { passive: false });
+            
+            document.addEventListener('touchend', () => {
+                isDragging = false;
+            });
+        });
+    </script>
 </body>
 </html>
