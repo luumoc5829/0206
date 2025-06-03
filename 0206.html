@@ -1,39 +1,29 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Hiệu ứng chữ rơi</title>
   <style>
     body {
       margin: 0;
-      padding: 0;
-      background: black;
       overflow: hidden;
+      background: #000;
+      font-family: sans-serif;
     }
-
     .falling-text {
       position: absolute;
-      top: -2em;
-      color: white;
-      font-size: 18px;
-      font-weight: bold;
-      white-space: nowrap;
-      text-shadow:
-        0 0 4px #00f,
-        0 0 8px #00f,
-        0 0 12px #00f,
-        0 0 16px #00f;
-      animation: fall linear forwards;
+      font-size: 24px;
+      color: #fff;
+      text-shadow: 0 0 8px #00f, 0 0 16px #00f;
+      animation: fall linear infinite;
     }
-
     @keyframes fall {
       0% {
-        transform: translateY(-2em);
+        top: -50px;
         opacity: 1;
       }
       100% {
-        transform: translateY(120vh);
+        top: 100vh;
         opacity: 0;
       }
     }
@@ -41,34 +31,17 @@
 </head>
 <body>
   <script>
-    const words = [
-      "Happy Birthday", "02.06.2003", "❤️", "Iuuuuuuu", "02.06.2025", "🎁"
-    ];
-
+    const texts = ["Yêu bạn", "Chúc mừng", "🎉", "💖", "😍"];
     function createText() {
       const text = document.createElement("div");
       text.className = "falling-text";
-      text.textContent = words[Math.floor(Math.random() * words.length)];
-
-      const fontSize = Math.random() * 10 + 24; // 24–34px
-      text.style.fontSize = fontSize + "px";
-
-      text.style.left = Math.random() * 100 + "vw";
-
-      text.style.animationDuration = Math.random() * 2 + 3 + "s"; // 3–5s
-
+      text.innerText = texts[Math.floor(Math.random() * texts.length)];
+      text.style.left = Math.random() * window.innerWidth + "px";
+      text.style.animationDuration = 3 + Math.random() * 3 + "s";
       document.body.appendChild(text);
-
-      setTimeout(() => {
-        text.remove();
-      }, 6000);
+      setTimeout(() => document.body.removeChild(text), 6000);
     }
-
-    setInterval(() => {
-      for (let i = 0; i < 6; i++) { // nhiều chữ rơi hơn
-        createText();
-      }
-    }, 400); // rơi dày hơn, mỗi 0.4s
+    setInterval(createText, 300);
   </script>
 </body>
 </html>
