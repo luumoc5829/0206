@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Chúc Mừng Sinh Nhật!</title>
     <style>
         body {
@@ -34,13 +35,15 @@
         .text {
             position: absolute;
             font-weight: 300;
-            text-shadow: 
-                0 0 5px #fff,
-                0 0 20px #fff,
-                0 0 30px #fff,
             white-space: nowrap;
             transform-origin: center center;
             opacity: 0;
+            /* Thêm dòng sau để viền trắng rõ nét */
+            -webkit-text-stroke: 1px white;
+            text-shadow: 
+                0 0 2px #fff,
+                0 0 5px #fff,
+                0 0 10px #fff;
         }
         
         .heart {
@@ -54,7 +57,7 @@
         @keyframes rain {
             0% { 
                 opacity: 0;
-                transform: translateY(-100px) translateZ(var(--z-pos));
+                transform: translateY(-140px) translateZ(var(--z-pos));
             }
             10% {
                 opacity: 0.9;
@@ -64,7 +67,7 @@
             }
             100% { 
                 opacity: 0;
-                transform: translateY(100vh) translateZ(var(--z-pos));
+                transform: translateY(120vh) translateZ(var(--z-pos));
             }
         }
     </style>
@@ -80,17 +83,17 @@
             const messages = [
                 "Happy Birthday",
                 "02.06.2025",
-                "Yêu Anhhhhh",
+                "Yêu Anhhhhh ♡",
                 "Thành ♡",
                 "🧡",
-                "Chúc anh sv vui nè",
+                "Chúc anh sinh nhật vui nè",
             ];
             
             // Tạo 5 lớp với độ sâu khác nhau
             for (let layer = 0; layer < 5; layer++) {
                 const layerElement = document.createElement('div');
                 layerElement.className = 'text-layer';
-                layerElement.style.transform = translateZ(${-layer * 200}px);
+                layerElement.style.transform = `translateZ(${-layer * 200}px)`;
                 scene.appendChild(layerElement);
                 
                 // Tạo chữ cho mỗi lớp
@@ -110,19 +113,19 @@
                         textElement.textContent = randomMsg;
                     }
                     
-                    const leftPos = Math.random() * 100;
+                    const leftPos = -50 + Math.random() * 170; // Từ -10% đến 110%
                     const fontSize = 1 + Math.random() * (2 - depth * 0.2); // Lớp càng xa chữ càng nhỏ
                     const duration = 6 + Math.random() * 3 + depth * 0.5; // Lớp xa rơi chậm hơn
                     const delay = Math.random() * 0.5;
                     const zPos = -100 + Math.random() * 200;
                     
-                    textElement.style.left = ${leftPos}%;
-                    textElement.style.fontSize = ${fontSize}em;
-                    textElement.style.setProperty('--z-pos', ${zPos}px);
-                    textElement.style.animation = rain ${duration}s linear ${delay}s forwards;
+                    textElement.style.left = `${leftPos}%`;
+                    textElement.style.fontSize = `${fontSize}em`;
+                    textElement.style.setProperty('--z-pos', `${zPos}px`);
+                    textElement.style.animation = `rain ${duration}s linear ${delay}s forwards`;
                     
                     // Lớp càng xa thì mờ hơn
-                    textElement.style.opacity = ${0.9 - depth * 0.15};
+                    textElement.style.opacity = `${0.9 - depth * 0.15}`;
                     
                     layerElement.appendChild(textElement);
                     
@@ -132,7 +135,7 @@
                 }
                 
                 // Tạo chữ với mật độ khác nhau cho từng lớp
-                const density = [500, 800, 1100, 900, 700]; // Lớp càng xa mật độ càng dày
+                const density = [500, 700, 900, 900, 700]; // Lớp càng xa mật độ càng dày
                 setInterval(createRain, density[depth]);
             }
             
@@ -142,7 +145,7 @@
             let rotation = { x: -10, y: 0 };
             
             function updateRotation() {
-                scene.style.transform = rotateX(${rotation.x}deg) rotateY(${rotation.y}deg);
+                scene.style.transform = `rotateX(${rotation.x}deg) rotateY(${rotation.y}deg)`;
             }
             updateRotation();
             
