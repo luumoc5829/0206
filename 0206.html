@@ -1,60 +1,74 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Chữ rơi phát sáng</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Hiệu ứng chữ rơi</title>
   <style>
     body {
       margin: 0;
+      padding: 0;
+      background: black;
       overflow: hidden;
-      background-color: #000; /* Nền đen */
-      font-family: 'Arial', sans-serif;
     }
 
     .falling-text {
       position: absolute;
-      font-size: 28px;
-      color: #ffffff; /* Chữ trắng */
-      text-shadow: 0 0 8px #00f, 0 0 16px #00f; /* Phát sáng xanh dương */
-      animation: fall linear;
+      top: -2em;
+      color: white;
+      font-size: 18px;
+      font-weight: bold;
       white-space: nowrap;
-      pointer-events: none;
+      text-shadow:
+        0 0 4px #00f,
+        0 0 8px #00f,
+        0 0 12px #00f,
+        0 0 16px #00f;
+      animation: fall linear forwards;
     }
 
     @keyframes fall {
       0% {
-        top: -50px;
+        transform: translateY(-2em);
         opacity: 1;
       }
       100% {
-        top: 100vh;
-        opacity: 0.2;
+        transform: translateY(120vh);
+        opacity: 0;
       }
     }
   </style>
 </head>
 <body>
   <script>
-    const texts = ["Happy BirthDay", "02.06.2025", "💙", "02.06.2003", "I Love You", "Been Together"];
-    
+    const words = [
+      "Happy Birthday", "02.06.2003", "❤️", "Iuuuuuuu", "02.06.2025", "🎁"
+    ];
+
     function createText() {
       const text = document.createElement("div");
       text.className = "falling-text";
-      text.innerText = texts[Math.floor(Math.random() * texts.length)];
+      text.textContent = words[Math.floor(Math.random() * words.length)];
 
-      // Vị trí và thời gian ngẫu nhiên
-      text.style.left = Math.random() * window.innerWidth + "px";
-      text.style.animationDuration = (2 + Math.random() * 3) + "s";
-      text.style.fontSize = (20 + Math.random() * 20) + "px";
+      const fontSize = Math.random() * 10 + 24; // 24–34px
+      text.style.fontSize = fontSize + "px";
+
+      text.style.left = Math.random() * 100 + "vw";
+
+      text.style.animationDuration = Math.random() * 2 + 3 + "s"; // 3–5s
+
       document.body.appendChild(text);
 
       setTimeout(() => {
         text.remove();
-      }, 5000);
+      }, 6000);
     }
 
-    // Rơi dày hơn bằng cách giảm thời gian tạo chữ
-    setInterval(createText, 80); // càng nhỏ càng dày
+    setInterval(() => {
+      for (let i = 0; i < 6; i++) { // nhiều chữ rơi hơn
+        createText();
+      }
+    }, 400); // rơi dày hơn, mỗi 0.4s
   </script>
 </body>
 </html>
