@@ -102,7 +102,7 @@
                     const randomMsg = messages[Math.floor(Math.random() * messages.length)];
                     textElement.textContent = randomMsg;
                     
-                    const leftPos = -50 + Math.random() * 170; // Từ -10% đến 110%
+                    const leftPos = -30 + Math.random() * 150; // Từ -10% đến 110%
                     const fontSize = 1 + Math.random() * (2 - depth * 0.2); // Lớp càng xa chữ càng nhỏ
                     const duration = 6 + Math.random() * 3 + depth * 0.5; // Lớp xa rơi chậm hơn
                     const delay = Math.random() * 0.5;
@@ -124,7 +124,7 @@
                 }
                 
                 // Tạo chữ với mật độ khác nhau cho từng lớp
-                const density = [500, 900, 900, 900, 700]; // Lớp càng xa mật độ càng dày
+                const density = [500, 700, 1100, 900, 700]; // Lớp càng xa mật độ càng dày
                 setInterval(createRain, density[depth]);
             }
             
