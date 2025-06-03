@@ -34,15 +34,15 @@
         .text {
             position: absolute;
             font-weight: 300;
-            text-shadow: 
-                0 0 5px #fff,
-    0 0 20px #fff,
-    0 0 30px #fff,
-    0 0 40px #fff,
-    0 0 50px #fff;
             white-space: nowrap;
             transform-origin: center center;
             opacity: 0;
+            /* Thêm dòng sau để viền trắng rõ nét */
+            -webkit-text-stroke: 1px white;
+            text-shadow: 
+                0 0 2px #fff,
+                0 0 5px #fff,
+                0 0 10px #fff;
         }
         
         .heart {
@@ -66,7 +66,7 @@
             }
             100% { 
                 opacity: 0;
-                transform: translateY(100vh) translateZ(var(--z-pos));
+                transform: translateY(120vh) translateZ(var(--z-pos));
             }
         }
     </style>
@@ -111,9 +111,9 @@
                         textElement.textContent = randomMsg;
                     }
                     
-                    const leftPos = Math.random() * 100;
+                    const leftPos = -50 + Math.random() * 170; // Từ -10% đến 110%
                     const fontSize = 1 + Math.random() * (2 - depth * 0.2); // Lớp càng xa chữ càng nhỏ
-                    const duration = 3 + Math.random() * 2 + depth * 0.5; // Lớp xa rơi chậm hơn
+                    const duration = 6 + Math.random() * 3 + depth * 0.5; // Lớp xa rơi chậm hơn
                     const delay = Math.random() * 0.5;
                     const zPos = -100 + Math.random() * 200;
                     
@@ -133,7 +133,7 @@
                 }
                 
                 // Tạo chữ với mật độ khác nhau cho từng lớp
-                const density = [200, 300, 400, 300, 200]; // Lớp càng xa mật độ càng dày
+                const density = [500, 700, 900, 900, 700]; // Lớp càng xa mật độ càng dày
                 setInterval(createRain, density[depth]);
             }
             
